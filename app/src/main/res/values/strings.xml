@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Tetris</string>
     <string name="score">Score:</string>
+    <string name="left">left</string>
+    <string name="right">right</string>
+    <string name="fall">fall</string>
+    <string name="rotate">rotate</string>
 </resources>
