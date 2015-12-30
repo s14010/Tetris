@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -78,9 +79,13 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private List<Integer> findFullRows() {
-        int[] rowCounts = new int[22];
+        int[] rowCounts = new int[24];
         for (Tetromino fixedTetromino : tetrominoList) {
             for (Coordinate coordinate : fixedTetromino.getCoordinates()) {
+                if(coordinate.y >= 20) {
+                    gameOver();
+                    break;
+                }
                 rowCounts[coordinate.y]++;
             }
         }
@@ -94,8 +99,25 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
         return list;
     }
 
+    private void gameOver() {
+        stopThread();
+        callback.GameOver();
+    }
+
     private void clearRows(List<Integer> list) {
-        callback.scoreAdd(list.size());
+        int critical;
+        if (list.size() == 4) {
+            critical = 16;
+        }else if (list.size() == 3) {
+            critical = 9;
+        }else if (list.size() == 2) {
+            critical = 4;
+        }else if (list.size() == 1){
+            critical = 1;
+        }else{
+            critical = 0;
+        }
+        callback.scoreAdd(critical);
         Collections.reverse(list);
         for (int row : list) {
             clearRow(row);
@@ -193,6 +215,7 @@ public class Board extends SurfaceView implements SurfaceHolder.Callback {
 
     public interface Callback {
         void scoreAdd(int score);
+        void GameOver();
     }
 
     private class DrawThread extends Thread {

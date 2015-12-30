@@ -282,6 +282,7 @@ public class Tetromino {
         public Coordinate[] getLocalBlockCoordinates(Orientation orientation) {
             return LOCAL_BLOCK_COORDINATES.get(this).get(orientation);
         }
+
     }
 
 }
